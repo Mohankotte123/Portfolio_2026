@@ -49,8 +49,13 @@ function VideoEnvironmentMap({ video }: { video: HTMLVideoElement }) {
 
   useEffect(() => () => texture.dispose(), [texture]);
 
+  const textureRef = useRef(texture);
+  useEffect(() => {
+    textureRef.current = texture;
+  }, [texture]);
+
   useFrame(() => {
-    if (video.readyState >= 2) texture.needsUpdate = true;
+    if (video.readyState >= 2) textureRef.current.needsUpdate = true;
   });
 
   return (
@@ -68,7 +73,7 @@ function useViewportScale() {
   return Math.min(1.35, Math.max(0.42, 420 / Math.max(w, 320)));
 }
 
-function EmeraldAuditLight({
+function SapphireAuditLight({
   pointerRef,
 }: {
   pointerRef: MutableRefObject<LandingPointerPayload>;
@@ -87,7 +92,7 @@ function EmeraldAuditLight({
   return (
     <pointLight
       ref={light}
-      color="#00FF41"
+      color="#7BA7FF"
       intensity={0.85}
       distance={6}
       decay={2}
@@ -103,7 +108,7 @@ function ShatterShards({
   count: number;
 }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
-  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const dummy = useRef<THREE.Object3D>(new THREE.Object3D());
   const positions = useRef<THREE.Vector3[]>([]);
   const velocities = useRef<THREE.Vector3[]>([]);
   const spins = useRef<THREE.Vector3[]>([]);
@@ -179,14 +184,15 @@ function ShatterShards({
       if (!p || !v || !s) continue;
       v.multiplyScalar(drag);
       p.addScaledVector(v, delta * (8 + shatterT.current * 2));
-      dummy.position.copy(p);
-      dummy.rotation.x += s.x * delta;
-      dummy.rotation.y += s.y * delta;
-      dummy.rotation.z += s.z * delta;
+      const d = dummy.current;
+      d.position.copy(p);
+      d.rotation.x += s.x * delta;
+      d.rotation.y += s.y * delta;
+      d.rotation.z += s.z * delta;
       const sc = THREE.MathUtils.clamp(0.35 + shatterT.current * 0.45, 0.35, 1.4);
-      dummy.scale.setScalar(sc);
-      dummy.updateMatrix();
-      m.setMatrixAt(i, dummy.matrix);
+      d.scale.setScalar(sc);
+      d.updateMatrix();
+      m.setMatrixAt(i, d.matrix);
     }
     m.instanceMatrix.needsUpdate = true;
     if (shatterT.current > cap) {
@@ -270,7 +276,7 @@ function MkLuxuryScene({
       />
 
       <VideoEnvironmentMap video={video} />
-      <EmeraldAuditLight pointerRef={pointerRef} />
+      <SapphireAuditLight pointerRef={pointerRef} />
 
       <group scale={scale}>
         <ShatterShards phase={phase} count={shardCount} />

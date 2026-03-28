@@ -1,8 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f6f3;
-  --foreground: #141820;
+  --background: #07070a; /* Obsidian */
+  --foreground: #e8ecf5; /* Liquid Mercury */
+
+  --mk-obsidian: #07070a;
+  --mk-slate: #111322;
+  --mk-midnight: #0a0e1a;
+  --mk-mercury: #e8ecf5;
+  --mk-platinum: #b9c2d6;
+  --mk-amethyst: #7c3aed;
+
+  /* Main portfolio plane — warm aubergine / ink vault; pairs with landing cool #07070A via shared violet + gold */
+  --mk-portfolio-base: #0a0714;
+  --mk-portfolio-deep: #030208;
+  --mk-portfolio-ink: #120a1c;
+  --mk-portfolio-fg: #ebe6f4;
+  --mk-portfolio-fg-muted: rgba(235, 230, 244, 0.58);
+  --mk-portfolio-fg-dim: rgba(235, 230, 244, 0.42);
+  --mk-portfolio-header-bg: color-mix(in srgb, var(--mk-portfolio-base) 90%, transparent);
 }
 
 @theme inline {
@@ -14,4 +30,138 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Luxury Obsidian — portfolio dashboard */
+@keyframes mk-border-beam {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.mk-border-beam {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.45),
+    rgba(124, 58, 237, 0.5),
+    rgba(212, 175, 55, 0.35),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: mk-border-beam 5s linear infinite;
+}
+
+@keyframes mk-scan-line {
+  0%,
+  100% {
+    transform: translateY(-100%);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(100%);
+    opacity: 0.85;
+  }
+}
+
+.mk-scan-line {
+  animation: mk-scan-line 4.5s ease-in-out infinite;
+}
+
+@keyframes mk-prism-spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+.mk-prism-spin {
+  animation: mk-prism-spin 14s linear infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes mk-network-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.45);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+  }
+}
+
+.mk-network-pulse {
+  animation: mk-network-pulse 2.2s ease-in-out infinite;
+}
+
+/* Trinity of Expertise — muted monospace eyebrow shimmer */
+@keyframes mk-trinity-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.mk-trinity-shimmer {
+  background-image: linear-gradient(
+    105deg,
+    rgba(148, 148, 160, 0.45) 0%,
+    rgba(210, 210, 220, 0.92) 42%,
+    rgba(165, 165, 180, 0.55) 58%,
+    rgba(148, 148, 160, 0.45) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: mk-trinity-shimmer 5.5s ease-in-out infinite;
+}
+
+/* Engineer's Playbook — vertical system scan (4s cadence) */
+@keyframes mk-playbook-system-scan {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 1px);
+    opacity: 0;
+  }
+}
+
+.mk-playbook-system-scan {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  z-index: 0;
+  height: 1px;
+  border-radius: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(96, 165, 250, 0.2) 18%,
+    rgba(191, 219, 254, 0.98) 50%,
+    rgba(96, 165, 250, 0.2) 82%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 8px rgba(96, 165, 250, 0.75),
+    0 0 20px rgba(124, 58, 237, 0.4);
+  animation: mk-playbook-system-scan 4s linear infinite;
 }
